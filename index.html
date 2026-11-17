@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image to Text - Free Online OCR Tool, Runs in Your Browser</title>
+<meta name="description" content="Free online OCR tool. Convert JPG, PNG and screenshots to editable text in your browser. Nothing is uploaded. No signup, no limits.">
+<link rel="canonical" href="https://yourdomain.com/">
+<link rel="icon" href="/favicon.ico">
+<meta property="og:title" content="Image to Text - Free Online OCR Tool">
+<meta property="og:description" content="Convert images to editable text for free, right in your browser. Nothing leaves your device.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourdomain.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0a0a0c;
+        --panel: #121216;
+        --panel-hover: #18181f;
+        --border: #24242d;
+        --text: #ededf0;
+        --muted: #8b8b93;
+        --acc: #4f46e5;
+        --acc-glow: rgba(79, 70, 229, 0.4);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    nav {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 18px 40px; border-bottom: 1px solid var(--border);
+        background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(10px);
+        position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.5px; display: flex; align-items: center; gap: 9px; }
+    .logo svg { display: block; }
+    .logo span { color: var(--acc); }
+    .nav-links a { color: var(--muted); text-decoration: none; margin-left: 22px; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 20px 20px; }
+
+    .hero { text-align: center; margin-bottom: 44px; }
+    .hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 14px; letter-spacing: -1px; line-height: 1.2; }
+    .hero p { color: var(--muted); font-size: 1.05rem; max-width: 580px; margin: 0 auto 18px; }
+    .trust { font-size: 0.82rem; color: #6f6f7a; letter-spacing: 0.2px; }
+    .trust b { color: var(--muted); font-weight: 500; }
+
+    .tool-box {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-top: 2px solid #2d2d68;
+        border-radius: 16px; padding: 34px;
+        box-shadow: 0 24px 50px -14px rgba(0,0,0,0.6);
+        max-width: 700px; margin: 0 auto;
+    }
+
+    .drop {
+        border: 2px dashed var(--border); border-radius: 12px;
+        padding: 40px 20px; text-align: center; cursor: pointer;
+        transition: border-color 0.2s, background 0.2s; background: #0e0e12;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        min-height: 180px; margin-bottom: 20px;
+    }
+    .drop:hover { border-color: #3b3b8a; background: var(--panel-hover); }
+    .drop.over { border-color: var(--acc); background: var(--panel-hover); }
+    .drop p { color: var(--muted); font-size: 0.95rem; }
+    input[type="file"] { display: none; }
+    #pic { max-width: 100%; max-height: 150px; border-radius: 8px; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
+    #stat { font-size: 0.85rem; color: var(--acc); font-weight: 600; margin-bottom: 12px; padding-left: 4px; min-height: 20px; }
+
+    #go {
+        background: var(--acc); color: #fff; border: none;
+        padding: 16px; border-radius: 10px; font-size: 1rem; font-weight: 600;
+        cursor: pointer; width: 100%; transition: background 0.2s, box-shadow 0.2s; margin-bottom: 16px;
+    }
+    #go:disabled { background: #27272a; color: #52525b; cursor: not-allowed; }
+    #go:hover:not(:disabled) { background: #4338ca; box-shadow: 0 0 20px var(--acc-glow); }
+
+    #res {
+        width: 100%; min-height: 160px; padding: 16px; border: 1px solid var(--border);
+        border-radius: 10px; font-family: ui-monospace, monospace; font-size: 0.9rem;
+        background: #0e0e12; color: #e4e4e7; outline: none; line-height: 1.5; resize: vertical;
+    }
+    #res:focus { border-color: var(--acc); }
+
+    .res-foot { display: flex; justify-content: flex-end; margin-top: 10px; }
+    #copy {
+        background: #1c1c24; color: var(--text); border: 1px solid var(--border);
+        padding: 9px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+        transition: border-color 0.2s;
+    }
+    #copy:hover { border-color: var(--acc); }
+
+    .sec { margin: 72px 0; }
+    .sec h2 { font-size: 1.7rem; margin-bottom: 22px; text-align: center; font-weight: 600; letter-spacing: -0.4px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .card {
+        background: var(--panel); border: 1px solid var(--border);
+        padding: 26px; border-radius: 12px; transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); border-color: #333; }
+    .card h3 { font-size: 1.05rem; margin-bottom: 10px; color: #fff; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .faq { max-width: 800px; margin: 0 auto; }
+    .faq details {
+        background: var(--panel); border: 1px solid var(--border);
+        border-radius: 8px; margin-bottom: 10px; padding: 16px 18px;
+    }
+    .faq summary { font-weight: 600; font-size: 1rem; outline: none; cursor: pointer; }
+    .faq summary:hover { color: #c9c9d4; }
+    .faq p { color: var(--muted); margin-top: 10px; font-size: 0.95rem; }
+
+    .prose { max-width: 760px; margin: 0 auto; }
+    .prose h2 { text-align: left; font-size: 1.5rem; margin: 40px 0 12px; }
+    .prose h2:first-child { margin-top: 0; }
+    .prose p { color: #a5a5b0; font-size: 0.97rem; margin-bottom: 14px; }
+    .prose p b { color: var(--text); font-weight: 600; }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 20px; text-align: center; margin-top: 72px; }
+    footer p { color: var(--muted); font-size: 0.9rem; }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+        .hero h1 { font-size: 1.75rem; }
+        .tool-box { padding: 22px; }
+        nav { padding: 15px 20px; }
+        .nav-links a { margin-left: 14px; font-size: 0.85rem; }
+        .sec { margin: 52px 0; }
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="3.5" width="19" height="17" rx="3" stroke="#4f46e5" stroke-width="2"/>
+            <path d="M7 12.5h10M7 8.5h6M7 16.5h8" stroke="#ededf0" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        OCR<span>Tool</span>
+    </div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy</a>
+    </div>
+</nav>
+
+<main class="wrap">
+
+    <div class="hero">
+        <h1>Extract Text From Images</h1>
+        <p>Free online OCR tool. Turn JPG, PNG and screenshots into editable text you can copy and paste anywhere.</p>
+        <div class="trust">no signup &middot; no uploads &middot; <b>runs on your own device</b></div>
+    </div>
+
+    <div class="tool-box">
+        <label for="fileInput" class="drop" id="drop">
+            <img id="pic" alt="preview of the image you picked">
+            <p id="d-txt">click to upload an image or drag it here</p>
+        </label>
+        <input type="file" id="fileInput" accept="image/*">
+
+        <div id="stat" aria-live="polite">waiting for file...</div>
+        <button id="go" disabled>Extract Text</button>
+        <textarea id="res" placeholder="Your extracted text will appear here..." readonly></textarea>
+        <div class="res-foot"><button id="copy" type="button">copy</button></div>
+    </div>
+
+    <!-- ad slot 1: paste your network code here when ready -->
+
+    <section class="sec">
+        <h2>How It Works</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>1. Upload your image</h3>
+                <p>Pick any screenshot, photo or scanned page from your device. JPG, PNG, WEBP, GIF and BMP all work.</p>
+            </div>
+            <div class="card">
+                <h3>2. Text gets read</h3>
+                <p>Tesseract OCR scans the image right in your browser and rebuilds the words as real text. Nothing is sent to a server.</p>
+            </div>
+            <div class="card">
+                <h3>3. Copy and use</h3>
+                <p>Hit copy and paste the text into Word, Excel, Notion or anywhere else. No account, no limits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ad slot 2: paste your network code here when ready -->
+
+    <section class="sec">
+        <h2>Why Use This Tool</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>100% private</h3>
+                <p>Your image never leaves your computer. No upload, no queue, no copy sitting on someone else's server.</p>
+            </div>
+            <div class="card">
+                <h3>No signup</h3>
+                <p>No account to create and nothing to cancel. Open the page, drop a file, get text.</p>
+            </div>
+            <div class="card">
+                <h3>Works on mobile</h3>
+                <p>Same tool on desktop and phone. Take a photo of a document and pull the text out on the spot.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="sec faq">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+            <summary>Is this image to text tool really free?</summary>
+            <p>Yes. The tool is free to use and supported by ads. There is no daily limit and no paid tier.</p>
+        </details>
+        <details>
+            <summary>Do you save my uploaded images?</summary>
+            <p>No. The text is read on your own device using JavaScript. The image is never uploaded, so there is nothing for us to save.</p>
+        </details>
+        <details>
+            <summary>Can I extract text from handwritten notes?</summary>
+            <p>Partly. It is built for printed text and clear screenshots. Messy handwriting will give you errors, so check anything important.</p>
+        </details>
+        <details>
+            <summary>What file types and sizes work?</summary>
+            <p>JPG, PNG, WEBP, GIF and BMP, up to 15MB. Very large photos are scaled down first, which is faster and usually more accurate.</p>
+        </details>
+        <details>
+            <summary>Why does the first run take longer?</summary>
+            <p>The recognition engine downloads once the first time you use it. After that it is cached and runs straight away.</p>
+        </details>
+    </section>
+
+    <section class="sec prose">
+        <h2>What is OCR?</h2>
+        <p>OCR stands for optical character recognition. When you take a photo of a receipt, a page of a book or a slide from a lecture, what you get is a grid of coloured pixels. No computer can copy words out of that. OCR reads the shapes, matches them against letterforms it already knows, and rebuilds them as real, selectable text you can paste anywhere.</p>
+
+        <h2>Why this one runs in your browser</h2>
+        <p>Most free OCR sites upload your image to a server, read it there and send the text back. That means a stranger's machine holds a copy of your ID card, bank statement or medical letter. This tool downloads the recognition engine once and runs it on your own device. <b>Nothing is uploaded, nothing is stored, and there is no account to cancel.</b></p>
+
+        <h2>What it handles well</h2>
+        <p>Printed text from screenshots, PDF exports, document photos, book pages and signs converts almost perfectly. Handwriting, low light photos and heavily stylised fonts are harder. Expect some errors there, and check anything you plan to rely on.</p>
+
+        <h2>Limits worth knowing</h2>
+        <p>Supported files are JPG, PNG, WEBP, GIF and BMP, up to 15MB. Images bigger than about 2000 pixels are scaled down before reading. Smaller images are faster and often more accurate, because the engine gets a cleaner look at each letter.</p>
+    </section>
+
+    <!-- ad slot 3: paste your network code here when ready -->
+
+</main>
+
+<footer>
+    <p>&copy; 2026 OCRTool. All rights reserved.</p>
+    <p style="margin-top: 10px;">
+        <a href="/about">About</a> |
+        <a href="/privacy">Privacy Policy</a> |
+        <a href="/terms">Terms of Service</a>
+    </p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is this image to text tool really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The tool is free to use and supported by ads. There is no daily limit and no paid tier."}},
+    {"@type":"Question","name":"Do you save my uploaded images?","acceptedAnswer":{"@type":"Answer","text":"No. The text is read on your own device using JavaScript. The image is never uploaded, so there is nothing to save."}},
+    {"@type":"Question","name":"Can I extract text from handwritten notes?","acceptedAnswer":{"@type":"Answer","text":"Partly. It is built for printed text and clear screenshots. Messy handwriting will give errors, so check anything important."}},
+    {"@type":"Question","name":"What file types and sizes work?","acceptedAnswer":{"@type":"Answer","text":"JPG, PNG, WEBP, GIF and BMP, up to 15MB. Very large photos are scaled down first, which is faster and usually more accurate."}}
+  ]
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+var inp = document.getElementById('fileInput');
+var drop = document.getElementById('drop');
+var pic = document.getElementById('pic');
+var btn = document.getElementById('go');
+var stat = document.getElementById('stat');
+var out = document.getElementById('res');
+var dt = document.getElementById('d-txt');
+var copyBtn = document.getElementById('copy');
+
+var f = null;
+var busy = false;  // one job at a time, no swapping mid run
+var job = 0;       // run id so stale callbacks bail
+var MAX = 2000;    // huge photos are slow and less accurate
+
+// a file dropped anywhere else would navigate away and kill the page
+window.addEventListener('dragover', function(e){ e.preventDefault(); });
+window.addEventListener('drop', function(e){ e.preventDefault(); });
+
+inp.addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if (file) { f = file; readFile(file); }
+});
+
+drop.addEventListener('dragover', function(e){
+    e.preventDefault();
+    if (!busy) drop.classList.add('over');
+});
+drop.addEventListener('dragleave', function(e){
+    if (!drop.contains(e.relatedTarget)) drop.classList.remove('over');
+});
+drop.addEventListener('drop', function(e){
+    e.preventDefault();
+    drop.classList.remove('over');
+    if (busy) { stat.textContent = 'hold on, still reading the last one.'; return; }
+    var file = e.dataTransfer.files[0];
+    if (!file) return;
+    try { inp.files = e.dataTransfer.files; } catch (_) {}
+    f = file;
+    readFile(file);
+});
+
+function readFile(file){
+    if (busy) return;
+    if (!file.type || file.type.indexOf('image/') !== 0) {
+        stat.textContent = 'that is not an image.';
+        return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+        stat.textContent = 'too big. keep it under 15mb.';
+        return;
+    }
+
+    var r = new FileReader();
+    r.onload = function(ev){
+        pic.src = ev.target.result;
+        pic.style.display = 'block';
+        dt.style.display = 'none';
+    };
+    r.readAsDataURL(file);
+
+    btn.disabled = false;
+    stat.textContent = 'image loaded. click extract.';
+    out.value = '';
+    copyBtn.textContent = 'copy';
+    inp.value = ''; // so the same file can be picked again
+}
+
+function shrink(file){
+    return new Promise(function(resolve){
+        var img = new Image();
+        var url = URL.createObjectURL(file);
+        img.onload = function(){
+            var big = Math.max(img.naturalWidth, img.naturalHeight);
+            if (big <= MAX) { URL.revokeObjectURL(url); return resolve(file); }
+            var k = MAX / big;
+            var c = document.createElement('canvas');
+            c.width = Math.round(img.naturalWidth * k);
+            c.height = Math.round(img.naturalHeight * k);
+            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            URL.revokeObjectURL(url);
+            c.toBlob(function(b){ resolve(b || file); }, 'image/png');
+        };
+        img.onerror = function(){ URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+    });
+}
+
+btn.addEventListener('click', async function(){
+    if (!f || busy) return;
+    busy = true;
+    var my = ++job;
+
+    btn.disabled = true;
+    btn.textContent = 'processing...';
+    stat.textContent = 'warming up...';
+    out.value = '';
+    copyBtn.textContent = 'copy';
+
+    try {
+        var src = await shrink(f);
+        var r = await Tesseract.recognize(src, 'eng', {
+            logger: function(m){
+                if (my !== job) return;
+                if (m.status === 'recognizing text') {
+                    stat.textContent = Math.round(m.progress * 100) + '% done';
+                } else {
+                    stat.textContent = m.status.replace('loading ', '') + '...';
+                }
+            }
+        });
+        if (my !== job) return;
+        out.value = r.data.text.trim();
+        stat.textContent = out.value ? 'done. copy your text.' : 'found no text in that one.';
+    } catch (err) {
+        if (my === job) stat.textContent = 'broke, try again.';
+    } finally {
+        if (my === job) {
+            busy = false;
+            btn.disabled = false;
+            btn.textContent = 'Extract Text';
+        }
+    }
+});
+
+copyBtn.addEventListener('click', function(){
+    if (!out.value) return;
+    navigator.clipboard.writeText(out.value).then(function(){
+        copyBtn.textContent = 'copied';
+        setTimeout(function(){ copyBtn.textContent = 'copy'; }, 1200);
+    }).catch(function(){
+        out.select();
+        document.execCommand('copy');
+        copyBtn.textContent = 'copied';
+        setTimeout(function(){ copyBtn.textContent = 'copy'; }, 1200);
+    });
+});
+</script>
+</body>
+</html>
