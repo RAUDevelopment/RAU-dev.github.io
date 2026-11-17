@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - OCRTool</title>
+<meta name="description" content="About OCRTool, a free browser-based image to text converter. No uploads, no accounts, no data collection beyond ads.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2.5' y='3.5' width='19' height='17' rx='3' fill='%234f46e5'/%3E%3Cpath d='M7 12.5h10M7 8.5h6M7 16.5h8' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root { --bg:#0a0a0c; --panel:#121216; --border:#24242d; --text:#ededf0; --muted:#8b8b93; --acc:#4f46e5; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter',sans-serif; }
+    body { background:var(--bg); color:var(--text); line-height:1.7; }
+    nav { display:flex; justify-content:space-between; align-items:center; padding:18px 40px; border-bottom:1px solid var(--border); background:rgba(10,10,12,.85); backdrop-filter:blur(10px); position:sticky; top:0; z-index:100; }
+    .logo { font-weight:700; font-size:1.15rem; letter-spacing:-.5px; display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--text); }
+    .logo span { color:var(--acc); }
+    .nav-links a { color:var(--muted); text-decoration:none; margin-left:22px; font-size:.9rem; font-weight:500; }
+    .nav-links a:hover { color:var(--text); }
+    .wrap { max-width:760px; margin:0 auto; padding:56px 20px; }
+    h1 { font-size:2rem; letter-spacing:-.6px; margin-bottom:8px; }
+    .sub { color:var(--muted); margin-bottom:34px; font-size:.95rem; }
+    h2 { font-size:1.25rem; margin:34px 0 10px; }
+    p { color:#a5a5b0; font-size:1rem; margin-bottom:14px; }
+    p b, p strong { color:var(--text); font-weight:600; }
+    a { color:#9d94ff; }
+    footer { border-top:1px solid var(--border); padding:40px 20px; text-align:center; margin-top:72px; }
+    footer p { color:var(--muted); font-size:.9rem; }
+    footer a { color:var(--muted); text-decoration:none; margin:0 10px; }
+    footer a:hover { color:var(--text); }
+    @media (max-width:600px) { nav { padding:15px 20px; } h1 { font-size:1.6rem; } }
+</style>
+</head>
+<body>
+<nav>
+    <a href="index.html" class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="17" rx="3" fill="#4f46e5"/><path d="M7 12.5h10M7 8.5h6M7 16.5h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        OCR<span>Tool</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy</a>
+    </div>
+</nav>
+
+<main class="wrap">
+    <h1>About OCRTool</h1>
+    <p class="sub">A small tool with one job: pull the text out of an image.</p>
+
+    <h2>What this is</h2>
+    <p>OCRTool is a free, browser-based image to text converter. You drop in a screenshot, a photo or a scanned page, and it gives you back the words as real, selectable text. That is it. No account, no daily limit, no upsell.</p>
+
+    <h2>Why it exists</h2>
+    <p>Most free OCR sites work by uploading your image to a server, reading it there, and sending the text back. That means your ID card, bank statement, or medical letter sits on a stranger's machine for a few seconds. For some people that's fine. For a lot of people it isn't. This tool does the reading <b>on your own device</b> using Tesseract, an open-source OCR engine compiled to JavaScript. Your image never leaves your browser.</p>
+
+    <h2>How it works under the hood</h2>
+    <p>The page loads Tesseract from a public CDN the first time you use it, caches it, and then runs the recognition locally. Very large photos are scaled down to around 2000 pixels first, which is faster and often more accurate. The extracted text lands in the box and you copy it. That's the whole pipeline.</p>
+
+    <h2>What it's good at, and what it isn't</h2>
+    <p>Printed text from screenshots, PDF exports, book pages, receipts and signs converts almost perfectly. Handwriting, low-light photos, and heavy stylised fonts are hit and miss. If you're going to rely on the result for anything important, check it.</p>
+
+    <h2>How it's funded</h2>
+    <p>Ads. That's it. There's no paid plan and no data for sale. If the ads ever get in the way, tell me and I'll pull them back.</p>
+
+    <h2>Who runs it</h2>
+    <p>One person, in their spare time. If you find a bug or want a feature, the contact email is on the <a href="privacy.html">privacy page</a>.</p>
+</main>
+
+<footer>
+    <p>&copy; 2026 OCRTool. All rights reserved.</p>
+    <p style="margin-top:10px;"><a href="about.html">About</a> | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+</footer>
+</body>
+</html>
